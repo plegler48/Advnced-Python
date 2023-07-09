@@ -3965,3 +3965,2346 @@ Phylo.draw_ascii(tree)
 ```
 ## Pairwise Alignments
 
+```python
+# Import Align from biopython
+from Bio import Align
+```
+
+
+```python
+aligner = Align.PairwiseAligner()
+```
+
+
+```python
+aligner = Align.PairwiseAligner(match_score = 1.0)
+```
+
+
+```python
+# Target sequence
+target = "GAACT"
+```
+
+
+```python
+# What we are looking for
+query = "GAT"
+```
+
+
+```python
+# How closely they align
+score = aligner.score(target, query)
+
+```
+
+
+```python
+score
+```
+
+
+
+
+    3.0
+
+
+
+
+```python
+alignments = aligner.align(target, query)
+```
+
+
+```python
+# Possible combinations
+for alignment in alignments:
+    print(alignment)
+```
+
+    target            0 GAACT 5
+                      0 ||--| 5
+    query             0 GA--T 3
+    
+    target            0 GAACT 5
+                      0 |-|-| 5
+    query             0 G-A-T 3
+    
+
+
+
+```python
+aligner.mode = "local"
+```
+
+
+```python
+target = "AGAACTC"
+```
+
+
+```python
+query = "GAACT"
+```
+
+
+```python
+score = aligner.score(target, query)
+```
+
+
+```python
+score
+```
+
+
+
+
+    5.0
+
+
+
+
+```python
+alignment = aligner.align(target, query)
+```
+
+
+```python
+for alignment in alignments:
+    print(alignment)
+```
+
+    target            0 GAACT 5
+                      0 ||--| 5
+    query             0 GA--T 3
+    
+    target            0 GAACT 5
+                      0 |-|-| 5
+    query             0 G-A-T 3
+    
+
+
+
+```python
+# All scores and criteria for scoring
+print(aligner)
+```
+
+    Pairwise sequence aligner with parameters
+      wildcard: None
+      match_score: 1.000000
+      mismatch_score: 0.000000
+      target_internal_open_gap_score: 0.000000
+      target_internal_extend_gap_score: 0.000000
+      target_left_open_gap_score: 0.000000
+      target_left_extend_gap_score: 0.000000
+      target_right_open_gap_score: 0.000000
+      target_right_extend_gap_score: 0.000000
+      query_internal_open_gap_score: 0.000000
+      query_internal_extend_gap_score: 0.000000
+      query_left_open_gap_score: 0.000000
+      query_left_extend_gap_score: 0.000000
+      query_right_open_gap_score: 0.000000
+      query_right_extend_gap_score: 0.000000
+      mode: local
+    
+
+
+
+```python
+aligner.algorithm
+```
+
+
+
+
+    'Smith-Waterman'
+
+
+
+
+```python
+aligner.epsilon
+```
+
+
+
+
+    1e-06
+
+
+
+
+```python
+from Bio import Align
+```
+
+
+```python
+aligner = Align.PairwiseAligner()
+```
+
+
+```python
+target = "GAACT"
+```
+
+
+```python
+query = "GAT"
+```
+
+
+```python
+alignments = aligner.align(target, query)
+```
+
+
+```python
+alignment = alignments[0]
+```
+
+
+```python
+alignment
+```
+
+
+
+
+    <Alignment object (2 rows x 5 columns) at 0x7fd21094ad90>
+
+
+
+
+```python
+alignment.score
+```
+
+
+
+
+    3.0
+
+
+
+
+```python
+alignment.target
+```
+
+
+
+
+    'GAACT'
+
+
+
+
+```python
+alignment.query
+```
+
+
+
+
+    'GAT'
+
+
+
+
+```python
+print(alignment)
+```
+
+    target            0 GAACT 5
+                      0 ||--| 5
+    query             0 GA--T 3
+    
+
+
+
+```python
+alignment.coordinates
+```
+
+
+
+
+    array([[0, 2, 4, 5],
+           [0, 2, 2, 3]])
+
+
+
+
+```python
+aligner.mode = "local"
+```
+
+
+```python
+local_alignments = aligner.align("TGAACT", "GAC")
+```
+
+
+```python
+local_alignment = local_alignments[0]
+```
+
+
+```python
+ print(local_alignment)
+```
+
+    target            1 GAAC 5
+                      0 ||-| 4
+    query             0 GA-C 3
+    
+
+
+
+```python
+local_alignment.shape
+```
+
+
+
+
+    (2, 4)
+
+
+
+
+```python
+aligner.mode = "global"
+```
+
+
+```python
+aligner = Align.PairwiseAligner(match = 1.0, mismatch_score = -10)
+```
+
+
+```python
+print(aligner)
+```
+
+    Pairwise sequence aligner with parameters
+      wildcard: None
+      match_score: 1.000000
+      mismatch_score: -10.000000
+      target_internal_open_gap_score: 0.000000
+      target_internal_extend_gap_score: 0.000000
+      target_left_open_gap_score: 0.000000
+      target_left_extend_gap_score: 0.000000
+      target_right_open_gap_score: 0.000000
+      target_right_extend_gap_score: 0.000000
+      query_internal_open_gap_score: 0.000000
+      query_internal_extend_gap_score: 0.000000
+      query_left_open_gap_score: 0.000000
+      query_left_extend_gap_score: 0.000000
+      query_right_open_gap_score: 0.000000
+      query_right_extend_gap_score: 0.000000
+      mode: global
+    
+
+
+
+```python
+alignments = aligner.align("AAACAAA", "AAAGAAA")
+```
+
+
+```python
+len(alignments)
+```
+
+
+
+
+    2
+
+
+
+
+```python
+print(alignments[0])
+```
+
+    target            0 AAAC-AAA 7
+                      0 |||--||| 8
+    query             0 AAA-GAAA 7
+    
+
+
+
+```python
+print(alignments[1])
+```
+
+    target            0 AAA-CAAA 7
+                      0 |||--||| 8
+    query             0 AAAG-AAA 7
+    
+
+
+
+```python
+print(local_alignment)
+```
+
+    target            1 GAAC 5
+                      0 ||-| 4
+    query             0 GA-C 3
+    
+
+
+
+```python
+local_alignment.sort()
+```
+
+
+```python
+print(local_alignment)
+```
+
+    target            0 GA-C 3
+                      0 ||-| 4
+    query             1 GAAC 5
+    
+
+
+
+```python
+from Bio.Seq import reverse_complement
+```
+
+
+```python
+target = "AAACCC"
+```
+
+
+```python
+query = "AACC"
+```
+
+
+```python
+aligner = Align.PairwiseAligner(mismatch_score= -1, internal_gap_score = -1)
+```
+
+
+```python
+ aligner.score(target, query)
+```
+
+
+
+
+    4.0
+
+
+
+
+```python
+aligner.score(target, reverse_complement(query))
+```
+
+
+
+
+    0.0
+
+
+
+
+```python
+aligner.score(target, reverse_complement(query), strand = "-")
+```
+
+
+
+
+    4.0
+
+
+
+
+```python
+aligner.score(target, query, strand = "-")
+```
+
+
+
+
+    0.0
+
+
+
+
+```python
+alignments = aligner.align(target, query)
+```
+
+
+```python
+len(alignments)
+```
+
+
+
+
+    1
+
+
+
+
+```python
+print(alignments[0])
+```
+
+    target            0 AAACCC 6
+                      0 -||||- 6
+    query             0 -AACC- 4
+    
+
+
+
+```python
+print(alignments[0].format("bed"))
+```
+
+    target	1	5	query	4.0	+	1	5	0	1	4,	0,
+    
+
+
+
+```python
+alignments = aligner.align(target, reverse_complement(query), strand = "-")
+```
+
+
+```python
+alignments = aligner.align(target, query, strand = "-")
+```
+
+
+```python
+len(alignments)
+```
+
+
+
+
+    2
+
+
+
+
+```python
+print(alignments[0])
+```
+
+    target            0 AAACCC----  6
+                      0 ---------- 10
+    query             4 ------GGTT  0
+    
+
+
+
+```python
+print(alignments[1])
+```
+
+    target            0 ----AAACCC  6
+                      0 ---------- 10
+    query             4 GGTT------  0
+    
+
+
+
+```python
+aligner.left_gap_score = -0.5
+```
+
+
+```python
+aligner.right_gap_score = -0.2
+```
+
+
+```python
+aligner.score(target, query)
+```
+
+
+
+
+    3.3
+
+
+
+
+```python
+alignments = aligner.align(target, query)
+```
+
+
+```python
+len(alignments)
+```
+
+
+
+
+    1
+
+
+
+
+```python
+print(alignments[0])
+```
+
+    target            0 AAACCC 6
+                      0 -||||- 6
+    query             0 -AACC- 4
+    
+
+
+
+```python
+alignments = aligner.align(target, reverse_complement(query), strand = "-")
+```
+
+
+```python
+print(alignments)
+```
+
+    <Bio.Align.PairwiseAlignments object at 0x7fd210929750>
+
+
+
+```python
+aligner.score(target, reverse_complement(query), strand = "-")
+```
+
+
+
+
+    3.3
+
+
+
+
+```python
+print(alignments[0])
+```
+
+    target            0 AAACCC 6
+                      0 -||||- 6
+    query             4 -AACC- 0
+    
+
+
+
+```python
+aligner.score(target,query, strand = "+")
+```
+
+
+
+
+    3.3
+
+
+
+
+```python
+
+```
+## Open CV 1
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+import cv2
+```
+
+
+```python
+img = cv2.imread("ricky.jpeg")
+```
+
+
+```python
+type(img)
+```
+
+
+
+
+    numpy.ndarray
+
+
+
+
+```python
+# Import image
+img_wrong = cv2.imread('wrong/path/doesnot/abcdefgh.jpeg')
+```
+
+
+```python
+type(img_wrong)
+```
+
+
+
+
+    NoneType
+
+
+
+
+```python
+# Show image
+plt.imshow(img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fa7eef38cd0>
+
+
+
+![output_6_1](https://github.com/plegler48/Advnced-Python/assets/132688139/166e6fec-d0d2-4bc8-9f90-e8f35e3f1abe)
+
+
+
+
+```python
+# Recolor Image
+fix_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+```
+
+
+```python
+plt.imshow(fix_img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fa7eeed0650>
+
+
+
+
+![output_16_1](https://github.com/plegler48/Advnced-Python/assets/132688139/2bf95893-68ce-4175-927f-02c45fc09357)
+
+
+
+
+```python
+# add effects to image
+img_gray = cv2.imread("ricky.jpeg", cv2.IMREAD_GRAYSCALE)
+img_gray.shape
+```
+
+
+
+
+    (290, 174)
+
+
+
+
+```python
+plt.imshow(img_gray)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fa7ede512d0>
+
+
+
+
+![output_11_1](https://github.com/plegler48/Advnced-Python/assets/132688139/419cd471-973b-4160-9c66-75744a733365)
+
+
+
+
+```python
+plt.imshow(img_gray, cmap = "gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fa7eddabb10>
+
+
+
+
+![output_10_1](https://github.com/plegler48/Advnced-Python/assets/132688139/01309132-c197-4c65-b1d4-ed7b319171fb)
+
+
+
+
+```python
+fix_img.shape
+```
+
+
+
+
+    (290, 174, 3)
+
+
+
+
+```python
+# Resize image
+new_img = cv2.resize(fix_img,(1000,4000))
+plt.imshow(new_img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fa7edd90310>
+
+
+
+
+![output_13_1](https://github.com/plegler48/Advnced-Python/assets/132688139/4ccdbf7f-accb-42c8-afba-c1ced8ac08fa)
+
+
+
+
+```python
+new_img.shape
+```
+
+
+
+
+    (4000, 1000, 3)
+
+
+
+
+```python
+w_ratio = 0.5
+h_ratio = 0.5
+new_img = cv2.resize(fix_img, (0,0), fix_img, w_ratio, h_ratio)
+```
+
+
+```python
+plt.imshow(new_img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fa7edd2a790>
+
+
+
+
+![output_16_1](https://github.com/plegler48/Advnced-Python/assets/132688139/2f4a30f3-f98a-4f38-b90e-ba15a24eefd5)
+
+
+
+
+```python
+new_img.shape
+```
+
+
+
+
+    (145, 87, 3)
+
+
+
+
+```python
+# Flip image
+flip_img = cv2.flip(fix_img, 0)
+plt.imshow(flip_img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fa7edd0dc90>
+
+
+
+
+![output_18_1](https://github.com/plegler48/Advnced-Python/assets/132688139/337abaf5-4a98-4f65-a42a-b83706be5d67)
+
+
+
+
+```python
+# FLip image again
+flip_img2 = cv2.flip(fix_img, -1)
+plt.imshow(flip_img2)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fa7edc78210>
+
+
+
+
+![output_19_1](https://github.com/plegler48/Advnced-Python/assets/132688139/f32c48e0-ca18-4ccd-a849-f31e659327fd)
+
+
+
+
+```python
+type(fix_img)
+```
+
+
+
+
+    numpy.ndarray
+
+
+
+
+```python
+cv2.imwrite('ricky_fixed_image.jpeg', fix_img)
+```
+
+
+
+
+    True
+
+
+
+
+```python
+
+```
+
+## Open CV 2
+
+```python
+import cv2
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+img = cv2.imread('djkhaled.jpeg')
+```
+
+
+```python
+plt.imshow(img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f82978eb110>
+
+
+
+
+![output_2_1](https://github.com/plegler48/Advnced-Python/assets/132688139/a4aeb27e-e573-4bee-9850-de61a2db56c8)
+
+
+
+
+```python
+img1 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+```
+
+
+```python
+plt.imshow(img1)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f82960662d0>
+
+
+
+
+![output_4_1](https://github.com/plegler48/Advnced-Python/assets/132688139/1f6008a5-1ec0-4f56-b34b-110722a0b6b3)
+
+
+
+
+```python
+img2 = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+```
+
+
+```python
+plt.imshow(img2)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f8296047f50>
+
+
+
+
+![output_6_1](https://github.com/plegler48/Advnced-Python/assets/132688139/bf8db4ed-ddff-4df8-b62d-368d05d7e760)
+
+
+
+
+```python
+img3 = cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
+```
+
+
+```python
+plt.imshow(img3)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f8295fbf0d0>
+
+
+
+
+![output_8_1](https://github.com/plegler48/Advnced-Python/assets/132688139/9813856d-a3c8-48ad-8949-dd88f18b11f4)
+
+
+
+
+```python
+img1 = cv2.imread('ricky.jpeg')
+img2 = cv2.imread('djkhaled.jpeg')
+```
+
+
+```python
+plt.imshow(img1)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f8295fa1ad0>
+
+
+
+
+![output_10_1](https://github.com/plegler48/Advnced-Python/assets/132688139/1909761f-d813-4d30-b9a9-2858baeeee87)
+
+
+
+
+```python
+plt.imshow(img2)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f8295f1f610>
+
+
+
+
+![output_11_1](https://github.com/plegler48/Advnced-Python/assets/132688139/88237fd0-6c11-442d-a396-3f3295ec2eac)
+
+
+
+
+```python
+img1 = cv2.resize(img1,(1200,1200))
+img2 = cv2.resize(img2, (1200, 1200))
+```
+
+
+```python
+alpha = 0.5
+beta = 0.5
+```
+
+
+```python
+blended = cv2.addWeighted(img1, alpha, img2, beta, gamma=0)
+```
+
+
+```python
+plt.imshow(blended)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f8295e8a510>
+
+
+
+
+![output_15_1](https://github.com/plegler48/Advnced-Python/assets/132688139/cce3e584-fabf-4ff0-a4d5-07a91c096354)
+
+
+
+
+```python
+alpha = 0.8
+beta = 0.2
+blended1 = cv2.addWeighted(img1, alpha, img2, beta, 0)
+plt.imshow(blended)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f82941c5b50>
+
+
+
+
+![output_16_1](https://github.com/plegler48/Advnced-Python/assets/132688139/34eaa628-8119-4fdf-93ab-2c8d3ec7e08e)
+
+
+
+
+```python
+img1 = cv2.imread('ricky.jpeg')
+img2 = cv2.imread('djkhaled.jpeg')
+img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+img1 = cv2.resize(img1, (100,100))
+```
+
+
+```python
+large_img = img2
+small_img= img1
+x_offset = 0
+y_offset = 0
+x_end = x_offset + small_img.shape[1]
+y_end = y_offset + small_img.shape[0]
+large_img[y_offset:y_end, x_offset:x_end] = small_img
+plt.imshow(large_img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f8297967d90>
+
+
+
+
+![output_18_1](https://github.com/plegler48/Advnced-Python/assets/132688139/0239d166-900d-4cb1-86a5-865acbc5e352)
+
+
+
+
+```python
+
+```
+## Open CV 3
+
+```python
+# https://github.com/worklifesg/Python-for-Computer-Vision-with-OpenCV-and-Deep-Learning
+```
+
+
+```python
+import cv2
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+img = cv2.imread('rainbow.jpg')
+```
+
+
+```python
+plt.imshow(img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f7f60feaad0>
+
+
+
+
+![output_3_1](https://github.com/plegler48/Advnced-Python/assets/132688139/c77e7840-278d-4b78-9997-51444963a6fd)
+
+
+
+
+```python
+img = cv2.imread('rainbow.jpg',0)
+```
+
+
+```python
+plt.imshow(img, cmap='gray')
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f7f60f1bfd0>
+
+
+
+
+![output_5_1](https://github.com/plegler48/Advnced-Python/assets/132688139/4cf02060-bf24-4a26-9af2-b01c91389bf5)
+
+
+
+
+```python
+ret1, thresh1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+```
+
+
+```python
+ret1
+```
+
+
+
+
+    127.0
+
+
+
+
+```python
+plt.imshow(thresh1, cmap="gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f7f60708210>
+
+
+
+
+![output_8_1](https://github.com/plegler48/Advnced-Python/assets/132688139/1ba20a10-622c-417c-9bba-015be297c188)
+
+
+
+
+```python
+img2 = cv2.imread('rainbow.jpg', 0)
+ret1, thresh1 = cv2.threshold(img2, 127, 255, cv2.THRESH_TRUNC)
+plt.imshow(thresh1, cmap= "gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f7f6066b3d0>
+
+
+
+
+![output_9_1](https://github.com/plegler48/Advnced-Python/assets/132688139/9ba21e0c-dbda-4a42-8a45-36359f1bfe6e)
+
+
+
+
+```python
+img3 = cv2.imread('rainbow.jpg', 0)
+ret1, thresh1, = cv2.threshold(img3, 127, 255, cv2.THRESH_TOZERO)
+plt.imshow(thresh1, cmap = "gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f7f605cdf10>
+
+
+
+
+![output_10_1](https://github.com/plegler48/Advnced-Python/assets/132688139/542d5025-f6ba-43c4-8b96-1434d0d534a3)
+
+
+
+
+```python
+img_r = cv2.imread('crossword.jpg', 0)
+plt.imshow(img_r, cmap = 'gray')
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f7f605b8790>
+
+
+
+![output_11_1](https://github.com/plegler48/Advnced-Python/assets/132688139/0ce85dbb-4481-4f4b-b6af-516e4d4af901)
+
+
+
+
+```python
+def show_pic(img):
+    fig = plt.figure(figsize = (15,15))
+    ax = fig.add_subplot(111)
+    ax.imshow(img, cmap="gray")
+```
+
+
+```python
+show_pic(img_r)
+```
+
+
+![output_13_0](https://github.com/plegler48/Advnced-Python/assets/132688139/c96030b2-b53c-4228-b324-c2b94944454c)
+
+
+
+
+```python
+ret, th1 = cv2.threshold(img_r, 127, 255, cv2.THRESH_BINARY)
+show_pic(th1)
+```
+
+
+![png](output_14_0.png)
+
+
+
+```python
+ret, th1 = cv2.threshold(img_r, 200, 255, cv2.THRESH_BINARY)
+show_pic(th1)
+```
+
+
+![output_15_0](https://github.com/plegler48/Advnced-Python/assets/132688139/c4121a58-ac3b-427a-8ccd-fcf80126d538)
+
+
+
+
+```python
+th2 = cv2.adaptiveThreshold(img_r, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 8)
+```
+
+
+```python
+show_pic(th2)
+```
+
+
+![output_17_0](https://github.com/plegler48/Advnced-Python/assets/132688139/981ce4ab-c43e-4820-ae32-04f9e6af4c1c)
+
+
+
+
+```python
+blended = cv2.addWeighted(src1 = th1, alpha = 0.6,
+                        src2 = th2, beta = 0.4, gamma = 0)
+show_pic(blended)
+```
+
+
+![output_18_0](https://github.com/plegler48/Advnced-Python/assets/132688139/4bdadec1-ed19-4e7a-ad0a-c1f16ed1e6de)
+
+
+
+
+```python
+th3 = cv2.adaptiveThreshold(img_r, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 8)
+blended = cv2.addWeighted(src1 = th1, alpha = 0.6,
+                        src2= th3, beta = 0.4, gamma = 0)
+
+show_pic(blended)
+```
+
+
+![output_19_0](https://github.com/plegler48/Advnced-Python/assets/132688139/2f5ec46a-cff1-4254-a18b-bef8aa87f6e9)
+
+
+
+
+```python
+```
+## Corner Detection
+
+```python
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+flat_chess = cv2.imread('chessboard.jpg')
+flat_chess = cv2.cvtColor(flat_chess, cv2.COLOR_BGR2RGB)
+plt.imshow(flat_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fe93de23c90>
+
+
+
+
+![output_1_1](https://github.com/plegler48/Advnced-Python/assets/132688139/a89f09e2-abfe-4880-8117-aba112507f7e)
+
+
+
+
+```python
+gray_flat_chess = cv2.cvtColor(flat_chess, cv2.COLOR_BGR2GRAY)
+plt.imshow(gray_flat_chess, cmap = "gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fe93dd5b1d0>
+
+
+
+
+![output_2_1](https://github.com/plegler48/Advnced-Python/assets/132688139/7581770f-992d-419b-a729-6bb858d13f9b)
+
+
+
+
+```python
+real_chess = cv2.imread("chessboardset.jpg")
+real_chess = cv2.cvtColor(real_chess, cv2.COLOR_BGR2RGB)
+```
+
+
+```python
+ plt.imshow(real_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fe93dcd4610>
+
+
+
+
+![output_4_1](https://github.com/plegler48/Advnced-Python/assets/132688139/69e5a940-e258-4470-ba60-e7e5a067fdd2)
+
+
+
+
+```python
+gray_real_chess = cv2.cvtColor(real_chess, cv2.COLOR_BGR2GRAY)
+plt.imshow(gray_real_chess, cmap = 'gray')
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fe93c43e410>
+
+
+
+
+![output_5_1](https://github.com/plegler48/Advnced-Python/assets/132688139/6aa07bbf-c48e-4e7b-b78f-fae185502876)
+
+
+
+
+```python
+gray = np.float32(gray_flat_chess)
+dst = cv2.cornerHarris(src = gray, blockSize = 2, ksize = 3, k = 0.04)
+dst = cv2.dilate(dst, None)
+```
+
+
+```python
+flat_chess[dst>0.01*dst.max()] = [255,0,0]
+plt.imshow(flat_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fe93c42fe90>
+
+
+
+
+![output_7_1](https://github.com/plegler48/Advnced-Python/assets/132688139/78f4595c-d103-4abe-b276-46633911652e)
+
+
+
+
+```python
+gray = np.float32(gray_real_chess)
+dst = cv2.cornerHarris(src = gray, blockSize = 2, ksize = 3, k = 0.04)
+dst = cv2.dilate(dst, None)
+real_chess[dst>0.01*dst.max()] = [255, 0, 0]
+plt.imshow(real_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fe93c3a7310>
+
+
+
+
+![output_8_1](https://github.com/plegler48/Advnced-Python/assets/132688139/1bce23f6-dbd5-4739-b1b5-e277b9b95968)
+
+
+
+
+```python
+#Shi-Tomasi Corner Detection
+corners = cv2.goodFeaturesToTrack(gray_flat_chess, 64, 0.01, 10)
+```
+
+
+```python
+ corners = np.int0(corners)
+    
+for i in corners:
+    x,y = i.ravel()
+    cv2.circle(flat_chess, (x,y),3,(255,0,0), -1)
+plt.imshow(flat_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fe93c30ef50>
+
+
+
+
+![output_10_1](https://github.com/plegler48/Advnced-Python/assets/132688139/58d7a262-38e8-45f0-a015-f3c6478c47ec)
+
+
+
+
+```python
+corners = cv2.goodFeaturesToTrack(gray_real_chess, 100, 0.01, 10)
+corners = np.int0(corners)
+for i in corners:
+    x, y = i.ravel()
+    cv2.circle(real_chess, (x,y), 3, (0,255,0), -1)
+plt.imshow(real_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fe93c27ef90>
+
+
+
+
+![output_11_1](https://github.com/plegler48/Advnced-Python/assets/132688139/4b6f6c47-d799-4793-80be-a5a3413b767d)
+
+
+
+
+```python
+
+```
+
+## Edge Detection
+
+```python
+import cv2
+```
+
+
+```python
+import numpy as np
+```
+
+
+```python
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+img = cv2.imread("djkhaled.jpeg")
+plt.imshow(img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f9d8877a490>
+
+
+
+
+![output_3_1](https://github.com/plegler48/Advnced-Python/assets/132688139/c38c1799-f43d-4117-8f2e-6c013338ad2e)
+
+
+
+
+```python
+edges = cv2.Canny(image = img, threshold1 = 127, threshold2 = 127)
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f9d886eca90>
+
+
+
+
+![output_4_1](https://github.com/plegler48/Advnced-Python/assets/132688139/45af9d9b-00db-4744-8457-3360d74b368a)
+
+
+
+
+```python
+med_value = np.median(img)
+med_value
+```
+
+
+
+
+    105.0
+
+
+
+
+```python
+lower = int(max(0, 0.7*med_value))
+upper = int(min(255,1.3*med_value))
+edges = cv2.Canny(img, threshold1 = lower, threshold2 = upper)
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f9d886e1d90>
+
+
+
+
+![output_6_1](https://github.com/plegler48/Advnced-Python/assets/132688139/7905c97f-7355-4010-adbf-de6f17288ed3)
+
+
+
+
+```python
+edges = cv2.Canny(image = img, threshold1 = lower, threshold2 = upper +100)
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f9d88654650>
+
+
+
+
+![output_7_1](https://github.com/plegler48/Advnced-Python/assets/132688139/dc606044-c825-44e0-971e-e207ac950580)
+
+
+
+
+```python
+blurred_img = cv2.blur(img, ksize = (5,5))
+
+edges = cv2.Canny(image=blurred_img,
+                threshold1 = lower,
+                threshold2 = upper)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f9d885c0650>
+
+
+
+
+![output_8_1](https://github.com/plegler48/Advnced-Python/assets/132688139/f1980b75-f076-4c38-b38e-4098427b40bd)
+
+
+
+
+```python
+blurred_img = cv2.blur(img, ksize = (7,7))
+
+edges = cv2.Canny(image=blurred_img,
+                threshold1 = lower,
+                threshold2 = upper)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f9d8852f390>
+
+
+
+
+![output_9_1](https://github.com/plegler48/Advnced-Python/assets/132688139/d2a77397-0d33-45ba-b2ce-0668bfe9dec4)
+
+
+
+
+```python
+blurred_img = cv2.blur(img, ksize = (5,5))
+
+edges = cv2.Canny(image=blurred_img,
+                threshold1 = lower,
+                threshold2 = upper + 50)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f9d88520190>
+
+
+
+
+![output_10_1](https://github.com/plegler48/Advnced-Python/assets/132688139/27adf911-e644-4900-9c3c-936a7da37eda)
+
+
+
+
+```python
+blurred_img = cv2.blur(img, ksize = (5,5))
+
+edges = cv2.Canny(image=blurred_img,
+                threshold1 = lower,
+                threshold2 = upper + 100)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f9d88482e90>
+
+
+
+
+![output_11_1](https://github.com/plegler48/Advnced-Python/assets/132688139/6bb13f6e-3164-4603-81ac-747a6afe88fb)
+
+
+
+
+```python
+blurred_img = cv2.blur(img, ksize = (5,5))
+
+edges = cv2.Canny(image=blurred_img,
+        threshold1 = lower,
+        threshold2 = upper + 60)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f9d883f1a50>
+
+
+
+
+![output_12_1](https://github.com/plegler48/Advnced-Python/assets/132688139/b40d4511-a4ac-4e55-bb39-9b64b48eed40)
+
+
+
+
+```python
+blurred_img = cv2.blur(img, ksize = (8,8))
+
+edges = cv2.Canny(image=blurred_img,
+                threshold1 = lower,
+                threshold2 = upper)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f9d883db750>
+
+
+
+
+![output_13_1](https://github.com/plegler48/Advnced-Python/assets/132688139/f0a39976-0e94-41a6-9f8a-533a9375decb)
+
+
+
+
+```python
+
+```
+
+## Feature Matching
+
+```python
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+def display(img, cmap = 'gray'):
+    fig = plt.figure(figsize = (12,18))
+    ax = fig.add_subplot(111)
+    ax.imshow(img, cmap = 'gray')
+```
+
+
+```python
+apple_jacks = cv2.imread("applejacks.jpg", 0)
+display(apple_jacks)
+```
+
+
+![output_2_0](https://github.com/plegler48/Advnced-Python/assets/132688139/59f6b6e6-5cf8-4866-bf0d-5ce5dc8fa998)
+
+
+
+
+```python
+cereals = cv2.imread('allcereal.jpg', 0)
+display(cereals)
+```
+
+
+![output_3_0](https://github.com/plegler48/Advnced-Python/assets/132688139/b1a1f7b2-5573-4567-b14f-0466646bf6e7)
+
+
+
+
+```python
+orb = cv2.ORB.create()
+
+kp1,des1 = orb.detectAndCompute(apple_jacks, mask=None)
+kp2,des2 = orb.detectAndCompute(cereals, mask=None)
+```
+
+
+```python
+bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck = True)
+matches = bf.match(des1, des2)
+```
+
+
+```python
+matches = sorted(matches, key = lambda x:x.distance)
+```
+
+
+```python
+apple_jacks_matches = cv2.drawMatches(apple_jacks, kp1, cereals, kp2, matches[:25], None, flags = 2)
+```
+
+
+```python
+display(apple_jacks_matches)
+```
+
+
+![output_8_0](https://github.com/plegler48/Advnced-Python/assets/132688139/7db65636-f232-45d7-a94f-a30d0f795c45)
+
+
+
+
+```python
+sift = cv2.SIFT_create()
+```
+
+
+```python
+kp1, des1 = sift.detectAndCompute(apple_jacks, None)
+kp2, des2 = sift.detectAndCompute(cereals, None)
+```
+
+
+```python
+bf = cv2.BFMatcher()
+matches = bf.knnMatch(des1, des2, k=2)
+```
+
+
+```python
+good = []
+
+for match1, match2 in matches:
+    if match1.distance < 0.75*match2.distance:
+        good.append([match1])
+```
+
+
+```python
+print('Length of total matches:', len(matches))
+print('Length of good matches:', len(good))
+```
+
+    Length of total matches: 426
+    Length of good matches: 11
+
+
+
+```python
+sift_matches = cv2.drawMatchesKnn(apple_jacks, kp1, cereals, kp2, good, None, flags =2)
+display(sift_matches)
+```
+
+
+![output_14_0](https://github.com/plegler48/Advnced-Python/assets/132688139/8f13d1d8-04db-49bc-9377-ddc04b8a4502)
+
+
+
+
+```python
+sift = cv2.SIFT_create()
+
+kp1, des1 = sift.detectAndCompute(apple_jacks, None)
+kp2, des2 = sift.detectAndCompute(cereals, None)
+```
+
+
+```python
+flann_index_KDtree = 0
+index_params = dict(algorithm=flann_index_KDtree, trees = 5)
+search_params = dict(checks=50)
+```
+
+
+```python
+flann = cv2.FlannBasedMatcher(index_params, search_params)
+matches = flann.knnMatch(des1, des2, k=2)
+good = []
+for match1, match2, in matches:
+    if match1.distance < 0.75*match2.distance:
+        good.append([match1])
+```
+
+
+```python
+flann_matches = cv2.drawMatchesKnn(apple_jacks, kp1, cereals, kp2, good, None, flags = 0)
+display(flann_matches)
+```
+
+
+![output_18_0](https://github.com/plegler48/Advnced-Python/assets/132688139/16b63b92-5d39-4660-af88-9159767ec44e)
+
+
+
+
+```python
+sift = cv2.SIFT_create()
+kp1, des1 = sift.detectAndCompute(apple_jacks, None)
+kp2, des2 = sift.detectAndCompute(cereals, None)
+```
+
+
+```python
+flann_index_KDtree = 0
+index_params = dict(algorithm = flann_index_KDtree, trees = 5)
+seach_params = dict(checks=50)
+```
+
+
+```python
+flann = cv2.FlannBasedMatcher(index_params, search_params)
+
+matches = flann.knnMatch(des1, des2, k = 2)
+```
+
+
+```python
+matchesMask = [[0,0] for i in range(len(matches))]
+```
+
+
+```python
+for i, (match1, match2) in enumerate(matches):
+    if match1.distance <0.75*match2.distance:
+        matchesMask[i] = [1,0]
+draw_params = dict(matchColor = (0,255,0),
+                    singlePointColor = (255,0,0),
+                    matchesMask = matchesMask,
+                    flags = 0)
+```
+
+
+```python
+flann_matches = cv2.drawMatchesKnn(apple_jacks, kp1, cereals, kp2, matches, None, **draw_params)
+display(flann_matches)
+```
+
+
+![output_24_0](https://github.com/plegler48/Advnced-Python/assets/132688139/2df76e5c-e14e-4796-8e66-aeea27f3238d)
+
+
+
+
+```python
+
+```
+
+## Object Detection
+
+```python
+import cv2
+```
+
+
+```python
+import numpy as np
+```
+
+
+```python
+import matplotlib.pyplot as plt
+```
+
+
+```python
+%matplotlib inline
+```
+
+
+```python
+full = cv2.imread('benjamin.jpg')
+```
+
+
+```python
+full = cv2.cvtColor(full, cv2.COLOR_BGR2RGB)
+```
+
+
+```python
+plt.imshow(full)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f16d97abed0>
+
+
+
+
+![output_6_1](https://github.com/plegler48/Advnced-Python/assets/132688139/4bab7ee5-bbe6-4e84-a861-8daed4ca913d)
+
+
+
+
+```python
+test = cv2.imread('hundreds.jpg')
+```
+
+
+```python
+test = cv2.cvtColor(test, cv2.COLOR_BGR2RGB)
+```
+
+
+```python
+plt.imshow(test)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f16d3e8ccd0>
+
+
+
+
+![output_9_1](https://github.com/plegler48/Advnced-Python/assets/132688139/9f7c302a-6e9b-4d30-9549-d14e9bf62d84)
+
+
+
+
+```python
+methods = ['cv2.TM_CCOEFF', 'cv2.TM_CCOEFF_NORMED', 'cv2.TM_CCORR', 'cv2.TM_CCORR_NORMED', 'cv2.TM_SQDIFF', 'cv2.TM_SQDIFF_NORMED']
+```
+
+
+```python
+# I had trouble finding great pictures so I had to resize the images to make them work
+
+for m in methods:
+    test_copy = test.copy()
+    method = eval(m)
+    
+    full_array = np.array(full)
+    
+    full_resized = cv2.resize(full_array, (test_copy.shape[1], test_copy.shape[0]))
+    
+    res = cv2.matchTemplate(test_copy, full_resized, method)
+    
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+    
+    if method in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
+        top_left = min_loc
+    else:
+        top_left = max_loc
+        
+    height, width, channels = full.shape
+    bottom_right = (top_left[0] + width, top_left[1] + height)
+    
+    full_copy = full.copy()
+    cv2.rectangle(full_copy, top_left, bottom_right, (255, 0, 0), 10)
+    
+    plt.subplot(121)
+    plt.imshow(res)
+    plt.title("Heatmap of template matching")
+    
+    plt.subplot(122)
+    plt.imshow(full_copy)
+    plt.title("Detection of template")
+    
+    plt.suptitle(m)
+    
+    plt.show()
+    print('\n')
+    print('\n')
+```
+
+
+![output_11_0](https://github.com/plegler48/Advnced-Python/assets/132688139/af499267-5402-4047-a3d5-1c2ac3113add)
+
+
+
+    
+    
+    
+    
+
+
+
+![output_11_2](https://github.com/plegler48/Advnced-Python/assets/132688139/cfd3b4cd-36e0-42f0-9016-354c715ea6cf)
+
+
+
+    
+    
+    
+    
+
+
+
+![output_11_4](https://github.com/plegler48/Advnced-Python/assets/132688139/db262620-887d-46a0-bc15-c9eaa43021ef)
+
+
+
+    
+    
+    
+    
+
+
+
+![output_11_6](https://github.com/plegler48/Advnced-Python/assets/132688139/420cfccc-6049-4999-bbb6-9151673c1b63)
+
+
+
+    
+    
+    
+    
+
+
+
+![output_11_8](https://github.com/plegler48/Advnced-Python/assets/132688139/ce4d161c-05b4-45f5-a2fb-d503b0d733b1)
+
+
+
+    
+    
+    
+    
+
+
+
+![output_11_10](https://github.com/plegler48/Advnced-Python/assets/132688139/e517944b-6fde-4378-a602-e684a63e682b)
+
+
+
+    
+    
+    
+    
+
+
+
+```python
+# I produced a heat map of the wrong image so I wet back and swapped them
+
+for m in methods:
+    test_copy = test.copy()
+    method = eval(m)
+    
+    full_resized = cv2.resize(full, (test_copy.shape[1], test_copy.shape[0]))
+    
+    res = cv2.matchTemplate(test_copy, full_resized, method)
+    
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+    
+    if method in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
+        top_left = min_loc
+    else:
+        top_left = max_loc
+        
+    height, width, channels = full_resized.shape  # Use the dimensions of the resized template image
+    bottom_right = (top_left[0] + width, top_left[1] + height)
+    
+    test_copy_with_rectangle = test_copy.copy()
+    cv2.rectangle(test_copy_with_rectangle, top_left, bottom_right, (255, 0, 0), 10)
+    
+    plt.subplot(121)
+    plt.imshow(res)
+    plt.title("Heatmap of template matching")
+    
+    plt.subplot(122)
+    plt.imshow(test_copy_with_rectangle)
+    plt.title("Detection of template")
+    
+    plt.suptitle(m)
+    
+    plt.show()
+    print('\n')
+    print('\n')
+```
+
+
+![output_12_0](https://github.com/plegler48/Advnced-Python/assets/132688139/d9ea96b4-7491-44a9-b5e8-7cb4aada5b69)
+
+
+
+    
+    
+    
+    
+
+
+
+![output_12_2](https://github.com/plegler48/Advnced-Python/assets/132688139/78f52415-ce4a-470f-803d-fa7b31c15d15)
+
+
+
+    
+    
+    
+    
+
+
+
+![output_12_4](https://github.com/plegler48/Advnced-Python/assets/132688139/24a66e31-5022-458c-8915-3da2b4a2f4ad)
+
+
+
+    
+    
+    
+    
+
+
+
+![output_12_6](https://github.com/plegler48/Advnced-Python/assets/132688139/044a5771-e7c5-4a04-a9b7-39ffb1a609e9)
+
+
+
+    
+    
+    
+    
+
+
+
+![output_12_8](https://github.com/plegler48/Advnced-Python/assets/132688139/7349cd0c-592d-44f5-8587-80658c8c73bc)
+
+
+
+    
+    
+    
+    
+
+
+
+![output_12_10](https://github.com/plegler48/Advnced-Python/assets/132688139/7fde27f9-f15b-4f63-9cb9-9b7742699022)
+
+
+
+    
+    
+    
+    
+
+
+
+```python
+
+```
